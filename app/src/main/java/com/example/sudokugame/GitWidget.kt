@@ -26,7 +26,13 @@ class GitWidget : AppWidgetProvider() {
 
 
 }
-
+/**
+ * Updates the Git widget with a click listener to open the GitHub repository.
+ *
+ * @param context The context of the application or activity.
+ * @param appWidgetManager The AppWidgetManager instance.
+ * @param appWidgetId The ID of the app widget to be updated.
+ */
 @SuppressLint("UnspecifiedImmutableFlag")
 private fun updateAppWidget(
     context: Context,
@@ -34,10 +40,17 @@ private fun updateAppWidget(
     appWidgetId: Int
 ) {
     val remoteViews = RemoteViews(context.packageName, R.layout.git_widget)
+
+    // Create an intent to open the GitHub repository
     val intent = Intent(Intent.ACTION_VIEW)
     intent.data = Uri.parse("https://github.com/peterkrajkovic/SudokuGame.git")
-    val pendingIntent = PendingIntent.getActivity(context,0,intent,0)
 
+    // Create a pending intent to handle the click event
+    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+    // Set the click listener on the widget button
     remoteViews.setOnClickPendingIntent(R.id.gitButton, pendingIntent)
+
+    // Update the app widget with the modified RemoteViews
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
 }

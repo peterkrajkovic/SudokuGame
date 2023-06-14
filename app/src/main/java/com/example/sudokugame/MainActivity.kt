@@ -1,10 +1,12 @@
 package com.example.sudokugame
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
+/**
+ * Main activity of the Sudoku game.
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -12,31 +14,40 @@ class MainActivity : AppCompatActivity() {
         configureButtons()
     }
 
+    /**
+     * Configures the click listeners for the buttons in the activity.
+     */
     private fun configureButtons() {
         findViewById<Button>(R.id.easyButton).setOnClickListener {
-            nextClassicActivity(1)
+            startClassicGameActivity(1)
         }
         findViewById<Button>(R.id.mediumButton).setOnClickListener {
-            nextClassicActivity(2)
+            startClassicGameActivity(2)
         }
         findViewById<Button>(R.id.hardButton).setOnClickListener {
-            nextClassicActivity(3)
+            startClassicGameActivity(3)
         }
         findViewById<Button>(R.id.twoPlayersButton).setOnClickListener {
-            nextTwoPlayersActivity()
+            startTwoPlayersActivity()
         }
     }
 
-    private fun nextTwoPlayersActivity() {
-        val intent = Intent(this, TwoPlayersActivity::class.java)
-        startActivity(intent)
+    /**
+     * Starts the TwoPlayersActivity.
+     */
+    private fun startTwoPlayersActivity() {
+        startActivity(Intent(this, TwoPlayersActivity::class.java))
     }
 
-    private fun nextClassicActivity(mode: Int) {
-        val intent = Intent(this, ClassicGameActivity::class.java)
-        intent.putExtra("mode", mode)
+    /**
+     * Starts the ClassicGameActivity with the specified game mode.
+     *
+     * @param mode The game mode: 1 for easy, 2 for medium, 3 for hard.
+     */
+    private fun startClassicGameActivity(mode: Int) {
+        val intent = Intent(this, ClassicGameActivity::class.java).apply {
+            putExtra("mode", mode)
+        }
         startActivity(intent)
     }
-
-
 }
