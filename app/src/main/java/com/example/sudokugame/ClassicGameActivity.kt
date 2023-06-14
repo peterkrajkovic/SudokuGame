@@ -88,6 +88,7 @@ class ClassicGameActivity : AppCompatActivity() {
 
         val startNewActivityRunnable = Runnable {
             val intent = Intent(this, GameFinishedActivity::class.java)
+            intent.putExtra("activity", "classic")
             intent.putExtra("mistakesCount", viewModel.mistakes)
             intent.putExtra("minutes", viewModel.minutes.value)
             intent.putExtra("seconds", viewModel.seconds.value)

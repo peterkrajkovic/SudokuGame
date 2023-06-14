@@ -33,7 +33,7 @@ internal fun updateAppWidget(
 ) {
     val remoteViews = RemoteViews(context.packageName, R.layout.git_widget)
     val intent = Intent(Intent.ACTION_VIEW)
-    intent.data = Uri.parse("https://insideandroid.in")
+    intent.data = Uri.parse("https://github.com/peterkrajkovic/SudokuGame.git")
     val pendingIntent = PendingIntent.getActivity(context,0,intent,0)
 
     remoteViews.setOnClickPendingIntent(R.id.gitButton, pendingIntent)

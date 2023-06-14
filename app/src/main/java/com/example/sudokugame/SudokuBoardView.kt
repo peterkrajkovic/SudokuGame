@@ -82,6 +82,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
                 var conflict = false
                 if (row == selectedRow && column == selectedColumn) {
                     fillCell(canvas, row, column, selectedCellPaint)
+                    conflict = true
                 } else if (row == selectedRow || column == selectedColumn || (row / sqrtSize == selectedRow / sqrtSize && column / sqrtSize == selectedColumn / sqrtSize)) {
                     fillCell(canvas, row, column, conflictingCellPaint)
                     conflict = true

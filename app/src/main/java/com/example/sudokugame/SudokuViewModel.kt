@@ -15,7 +15,7 @@ class SudokuViewModel(mode: Int) : ViewModel() {
     var seconds = MutableLiveData<Int>()
     private var timer: Timer? = null
     private var elapsedTimeInSeconds = 0
-    private var solution = ArrayList<Int?>()
+    private var solution = ArrayList<Int>()
     var mistakes = 0
     private var finished = false
 
@@ -23,20 +23,10 @@ class SudokuViewModel(mode: Int) : ViewModel() {
         selectedCell.postValue(Pair(10, 10))
         createSolution()
         when (mode) {
-            1 -> deleteFromSolution(1)
-            2 -> deleteFromSolution(45)
-            else-> deleteFromSolution(50)
+            1 -> makeBoard(30)
+            2 -> makeBoard(40)
+            else-> makeBoard(45)
         }
-        val array = ArrayList<Pair<Int, Int>?>()
-
-        for (i in 0 until solution.size) {
-            if (solution[i] == null) {
-                array.add(null)
-            } else {
-                array.add(Pair(solution[i]!!,0))
-            }
-        }
-        boardNumbers.postValue(array.toList())
         startTimer()
     }
 
@@ -61,20 +51,29 @@ class SudokuViewModel(mode: Int) : ViewModel() {
             }
         }
     }
-    private fun deleteFromSolution(number: Int) {
+    private fun makeBoard(number: Int) {
         var reps  = number
+        val array = ArrayList<Pair<Int, Int>?>()
+        for (i in 0 until solution.size) {
+            array.add(Pair(solution[i],0))
+        }
+
         while(reps != 0) {
             val randomNumber = Random.nextInt(0,81)
-            if (solution[randomNumber] != null) {
-                solution[randomNumber]= null
+            if (array[randomNumber] != null) {
+                array[randomNumber]= null
                 reps--
             }
         }
+        boardNumbers.postValue(array.toList())
     }
 
     fun updateSelectedCell(row: Int, column: Int) {
         if (finished) return
-        if (boardNumbers.value!!.toMutableList()[row * 9 + column] == null || boardNumbers.value!!.toMutableList()[row * 9 + column]!!.second != 0) {
+        if (boardNumbers.value!!.toMutableList()[row * 9 + column] == null ||
+            (boardNumbers.value!!.toMutableList()[row * 9 + column]!!.second != 0 &&
+            boardNumbers.value!!.toMutableList()[row * 9 + column]!!.second != 3))
+        {
             selectedCell.postValue(Pair(row, column))
         }
     }
@@ -85,6 +84,17 @@ class SudokuViewModel(mode: Int) : ViewModel() {
         currentList?.set(selectedCell.value!!.first * 9 + selectedCell.value!!.second, Pair(number,1))
         selectedCell.value = Pair(10,10)
         boardNumbers.value = currentList
+    }
+
+    fun numberInputWithCheck(number: Int) : Int {
+        if (selectedCell.value!!.first == 10 || finished) return 0
+        val row = selectedCell.value!!.first
+        val column = selectedCell.value!!.second
+        numberInput(number)
+        if (checkCell(row, column)) {
+            return 1
+        }
+        return -1
     }
 
     fun acceptNumber() {
@@ -116,38 +126,30 @@ class SudokuViewModel(mode: Int) : ViewModel() {
             if (pair == null) return false
         }
         stopTimer()
-        val board = boardNumbers.value
-        val currentList = boardNumbers.value?.toMutableList()
         for (row in 0 until 9) {
             for (column in 0 until 9) {
-                val rowValues = (0 until 9).map { board?.get(row * 9 + it)?.first }
-                val colValues = (0 until 9).map { board?.get(it * 9 + column)?.first }
-
-                val startRow = row / 3 * 3
-                val startCol = column / 3 * 3
-                val gridValues = mutableListOf<Int?>()
-                for (rowOffset in 0 until 3) {
-                    for (colOffset in 0 until 3) {
-                        gridValues.add(board?.get((startRow + rowOffset) * 9 + (startCol + colOffset))?.first)
-                    }
-                }
-                val cellValue = board?.get(row * 9 + column)?.first
-                val isRowValid = rowValues.count { it == cellValue } == 1
-                val isColValid = colValues.count { it == cellValue } == 1
-                val isGridValid = gridValues.count { it == cellValue } == 1
-
-                if (isRowValid && isColValid && isGridValid) {
-                    currentList?.set(row * 9 + column, Pair(currentList[row * 9 + column]!!.first,3))
-                } else {
-                    currentList?.set(row * 9 + column, Pair(currentList[row * 9 + column]!!.first,4))
+                if (!checkCell(row, column)) {
                     mistakes++
                 }
             }
         }
-        boardNumbers.value = currentList
         finished = true
-        mistakes /= 3
         return true
+    }
+
+    private fun checkCell(row: Int, column: Int) : Boolean {
+        val currentList = boardNumbers.value?.toMutableList()
+
+        return if (currentList?.get(row * 9 + column)!!.first  == solution[row * 9 + column]) {
+            currentList?.set(row * 9 + column, Pair(currentList[row * 9 + column]!!.first,3))
+            boardNumbers.value = currentList
+            true
+        } else {
+            currentList?.set(row * 9 + column, Pair(currentList[row * 9 + column]!!.first,4))
+            boardNumbers.value = currentList
+            false
+        }
+
     }
 
 

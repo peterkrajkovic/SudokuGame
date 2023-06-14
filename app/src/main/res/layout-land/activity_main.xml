@@ -3,25 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_image"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/banner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:fontFamily="@font/audiowide"
         android:text="Welcome to \nsudoku!"
         android:textAlignment="center"
-        android:textSize="28sp"
-        android:layout_centerHorizontal="true" />
+        android:textSize="28sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="choose your game:"
         android:layout_below="@+id/banner"
-        android:textSize="15sp"
-        android:layout_alignStart="@+id/banner" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/audiowide"
+        android:text="choose your game:"
+        android:textSize="15sp" />
 
     <GridLayout
         android:id="@+id/gridLayout"
