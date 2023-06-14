@@ -113,12 +113,13 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
                     val text = boardNumbers[row * boardSize + column]!!.first.toString()
                     val textX = column * cellSizePixels + (cellSizePixels - textPaint.measureText(text)) / 2
                     val textY = row * cellSizePixels + (cellSizePixels + textPaint.textSize) / 2
-
-                    when (boardNumbers[row * boardSize + column]!!.second) {
-                        0 -> fillCell(canvas, row, column, preDefinedCellPaint)
-                        2 -> fillCell(canvas, row, column, checkedCellPaint)
-                        3 -> fillCell(canvas, row, column, correctCellPaint)
-                        4 -> fillCell(canvas, row, column, wrongCellPaint)
+                    if (!conflict) {
+                        when (boardNumbers[row * boardSize + column]!!.second) {
+                            0 -> fillCell(canvas, row, column, preDefinedCellPaint)
+                            2 -> fillCell(canvas, row, column, checkedCellPaint)
+                            3 -> fillCell(canvas, row, column, correctCellPaint)
+                            4 -> fillCell(canvas, row, column, wrongCellPaint)
+                        }
                     }
 
                     canvas.drawText(text, textX, textY, textPaint)
