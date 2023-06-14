@@ -20,4 +20,11 @@
     <string name="checkSymbol">✔</string>
     <string name="mistakes">mistakes:</string>
     <string name="_0">0</string>
+    <string name="welcome_to_nsudoku">Welcome to \nsudoku!</string>
+    <string name="choose_your_game">choose your game:</string>
+    <string name="easy">easy</string>
+    <string name="medium">medium</string>
+    <string name="hard">hard</string>
+    <string name="_2_players">2 players</string>
+    <string name="see_source">see source</string>
 </resources>
