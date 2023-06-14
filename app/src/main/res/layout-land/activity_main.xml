@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Welcome to \nsudoku!"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="choose your game:"
+        android:layout_below="@+id/banner"
+        android:textSize="15sp"
+        android:layout_alignStart="@+id/banner" />
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:layout_below="@+id/banner"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/easyButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="easy"
+            android:layout_margin="5dp"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+        <Button
+            android:id="@+id/mediumButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_marginStart="5dp"
+            android:text="medium" />
+        <Button
+            android:id="@+id/hardButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_margin="5dp"
+            android:layout_column="1"
+            android:text="hard" />
+
+        <Button
+            android:id="@+id/twoPlayersButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:text="2 players" />
+    </GridLayout>
+</RelativeLayout>
