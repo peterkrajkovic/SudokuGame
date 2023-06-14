@@ -1,5 +1,6 @@
 package com.example.sudokugame
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -26,7 +27,8 @@ class GitWidget : AppWidgetProvider() {
 
 }
 
-internal fun updateAppWidget(
+@SuppressLint("UnspecifiedImmutableFlag")
+private fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int

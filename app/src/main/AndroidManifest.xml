@@ -11,10 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SudokuGame"
         tools:targetApi="31">
+
+
         <activity
             android:name=".TwoPlayersActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".GameFinishedActivity"
             android:exported="false" />
