@@ -1,5 +1,4 @@
 package com.example.sudokugame
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
@@ -10,6 +9,12 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 
+/**
+ * Custom view for displaying the Sudoku board.
+ *
+ * @param context The context of the view.
+ * @param attributeSet The attribute set of the view.
+ */
 class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
     private var boardSize = 9
@@ -34,40 +39,56 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
 
     private val selectedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.rgb(173,216,230)
+        color = Color.rgb(173, 216, 230)
     }
 
     private val conflictingCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.LTGRAY
     }
-    private var textPaint = Paint().apply {
+
+    private val textPaint = Paint().apply {
         color = Color.BLACK
         textSize = 35f
     }
-    private var preDefinedCellPaint = Paint().apply {
+
+    private val preDefinedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.rgb(235,235,235)
+        color = Color.rgb(235, 235, 235)
     }
-    private var checkedCellPaint = Paint().apply {
+
+    private val checkedCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
-        color = Color.rgb(231,255,232)
+        color = Color.rgb(231, 255, 232)
     }
-    private var correctCellPaint = Paint().apply {
+
+    private val correctCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.GREEN
     }
-    private var wrongCellPaint = Paint().apply {
+
+    private val wrongCellPaint = Paint().apply {
         style = Paint.Style.FILL_AND_STROKE
         color = Color.RED
     }
 
+    /**
+     * Measures the view and determines its size.
+     *
+     * @param widthMeasureSpec The width measure specification.
+     * @param heightMeasureSpec The height measure specification.
+     */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val sizePixels = widthMeasureSpec.coerceAtMost(heightMeasureSpec)
         setMeasuredDimension(sizePixels, sizePixels)
     }
 
+    /**
+     * Draws the Sudoku board on the canvas.
+     *
+     * @param canvas The canvas on which to draw.
+     */
     override fun onDraw(canvas: Canvas) {
         cellSizePixels = (width / boardSize)
         fillCells(canvas)
@@ -75,7 +96,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
     }
 
     private fun fillCells(canvas: Canvas) {
-        if (selectedRow == -1 || selectedColumn == -1 ) return
+        if (selectedRow == -1 || selectedColumn == -1) return
 
         for (row in 0 until boardSize) {
             for (column in 0 until boardSize) {
@@ -92,19 +113,16 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
                     val text = boardNumbers[row * boardSize + column]!!.first.toString()
                     val textX = column * cellSizePixels + (cellSizePixels - textPaint.measureText(text)) / 2
                     val textY = row * cellSizePixels + (cellSizePixels + textPaint.textSize) / 2
-                    if (boardNumbers[row * boardSize + column]!!.second == 0 && !conflict) {
-                        fillCell(canvas, row, column, preDefinedCellPaint)
-                    } else if (boardNumbers[row * boardSize + column]!!.second == 2 && !conflict) {
-                        fillCell(canvas, row, column, checkedCellPaint)
-                    } else if (boardNumbers[row * boardSize + column]!!.second == 3 && !conflict) {
-                        fillCell(canvas, row, column, correctCellPaint)
-                    } else if (boardNumbers[row * boardSize + column]!!.second == 4 && !conflict) {
-                        fillCell(canvas, row, column, wrongCellPaint)
+
+                    when (boardNumbers[row * boardSize + column]!!.second) {
+                        0 -> fillCell(canvas, row, column, preDefinedCellPaint)
+                        2 -> fillCell(canvas, row, column, checkedCellPaint)
+                        3 -> fillCell(canvas, row, column, correctCellPaint)
+                        4 -> fillCell(canvas, row, column, wrongCellPaint)
                     }
 
                     canvas.drawText(text, textX, textY, textPaint)
                 }
-
             }
         }
     }
@@ -141,7 +159,12 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
         }
     }
 
-
+    /**
+     * Handles touch events on the view.
+     *
+     * @param event The motion event.
+     * @return True if the event is handled, false otherwise.
+     */
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         return when (event.action) {
@@ -159,12 +182,23 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
         onTouchListener?.onTouch(selectedRow, selectedColumn)
     }
 
+    /**
+     * Updates the selected cell on the board.
+     *
+     * @param row The row of the selected cell.
+     * @param column The column of the selected cell.
+     */
     fun updateSelectedCell(row: Int, column: Int) {
         selectedRow = row
         selectedColumn = column
         invalidate()
     }
 
+    /**
+     * Updates the numbers on the Sudoku board.
+     *
+     * @param boardNumbers The list of numbers on the board.
+     */
     fun updateBoardNumbers(boardNumbers: List<Pair<Int, Int>?>) {
         this.boardNumbers = boardNumbers as ArrayList<Pair<Int, Int>?>
         selectedRow = 10
@@ -172,7 +206,16 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
         invalidate()
     }
 
+    /**
+     * Interface for handling touch events on the Sudoku board.
+     */
     interface OnTouchListener {
+        /**
+         * Called when a cell on the board is touched.
+         *
+         * @param row The row of the touched cell.
+         * @param column The column of the touched cell.
+         */
         fun onTouch(row: Int, column: Int)
     }
 }

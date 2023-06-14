@@ -7,9 +7,9 @@
     <Button
         android:id="@+id/gitButton"
         android:layout_width="match_parent"
-        android:background="@color/light_blue_200"
+        android:background="@color/light_blue_600"
         android:layout_height="match_parent"
         android:textSize="15sp"
-        android:text="@string/see_source"
+        android:text="@string/open_git"
         />
 </FrameLayout>
